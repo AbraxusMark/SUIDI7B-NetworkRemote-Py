@@ -5,11 +5,9 @@ import sys
 #UDP_IP="192.168.7.255"
 destination_port = 2430
 #scene_number="00"
-  
 
 try :
   optlist, args = getopt.getopt( sys.argv[1:], 'd:s:h')
-  ipv6 = 0
   destination_ip = ""
 except getopt.GetoptError:
   print "Errror in option input"
@@ -36,8 +34,9 @@ if __name__ == "__main__" :
   print "UDP target IP:", destination_ip
   print "hex scene: ", scenehex
   print "command:", message
-  print "compare:", "53697564695f37426d0001000000010000000000".decode('hex')
-  sock = socket.socket( socket.AF_INET6 if ipv6 else socket.AF_INET, socket.SOCK_DGRAM)
+  print ("compare:", "53697564695f37426d0001000000010000000000".decode('hex'))
+  sock = socket.socket( socket.AF_INET, socket.SOCK_DGRAM)
+  sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
   sock.sendto( message, (destination_ip, destination_port) ) # destination IP address must be a string, not a packeted IP address
 
 
